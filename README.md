@@ -8,13 +8,19 @@ In order to run properly a wer server is required since some browsers (Chrome, e
 Some server implementation could be used as it follows:
 
 ### Python
+
 ```sh
-python -m SimpleHTTPServer 3000
+pip install -r requirements.txt
+python server.py
 ```
 
 ### Ruby
 ```sh
 ruby server.rb
 ```
+
+### PHP
+```sh
+php serv
 
 Then visit <http://localhost:3000/>.
