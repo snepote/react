@@ -1,0 +1,32 @@
+div.calculator {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  display: table;
+}
+
+div.row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.button {
+  margin: 2px;
+  padding: 10px;
+}
+
+div.column {
+  float: left;
+  margin-left: 5px;
+  display: table;
+  text-align: right;
+}
+
+div.screen {
+  margin: 5px;
+  padding: 10px;
+  height: 20px;
+  display: table;
+  background-color: grey;
+}
