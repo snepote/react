@@ -7,10 +7,11 @@ import NameForm from './name-form.js';
 import EssayForm from './essay-form.js';
 import FlavorForm from './flavor-form.js';
 import Reservation from './reservation.js';
+import Temperature from './temperature.js';
 import './index.css';
 
 
 ReactDOM.render(
-  <input />,
+  <Temperature />,
   document.getElementById('root')
 );
