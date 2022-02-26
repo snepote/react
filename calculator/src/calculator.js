@@ -2,47 +2,109 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './calculator.css';
 
-const Button = ({value, onClick}) => {
+const Button = ({value, onClick, display}) => {
   return(
     <button className="button" value={value} onClick={onClick}>
-      {value}
+      {display}
     </button>
   );
 }
+
+const isOperand = value =>  Number(value) === parseFloat(value);
+
+const isOperator = value => ['+', '-', '*', '/'].includes(value);
+
+const isEqual = value => value === '=';
+
+function calculate(a, operator, b) {
+    switch(operator) {
+      case '+':
+        return a + b;
+        break;
+      case '-':
+        return a - b;
+        break;
+      case '*':
+        return a * b;
+        break;
+      case '/':
+        return a / b;
+        break;
+      default:
+        throw 'The operator ' + operator + ' is not supported';
+    }
+  }
 
 class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      screen: [],
-      expression: null
+      screen: '',
+      expression: {
+        operandOne: 0,
+        operandTwo: 0
+      }
     };
     this.handleClick = this.handleClick.bind(this);
-    this.validChars = /[0-9|\+|\=|c]/g;
   }
+
 
   handleClick(event) {
     const value = event.target.value;
-    let newScreen = [...this.state.screen];
-    if (value.match(this.validChars)) {
-      if (value === 'c') {
-        this.setState({screen: []});
-      } else if (value === '+' && this.state.expression != null ) {
-        console.log('sum');
-      } else {
-        newScreen.push(value);
-        console.log(newScreen);
-        this.setState({
-          screen: newScreen,
-          expression: Number(newScreen.join(''))
-        });
-      }
+    const state = {...this.state};
+    const operandOne = this.state.expression.operandOne;
+
+    if (isOperand(value)) {
+      const newOperand = Number(operandOne.toString() + value.toString());
+      const expression = {...state.expression, operandOne: newOperand};
+      this.setState({
+        screen: newOperand,
+        expression: expression
+      });
+    } else if (isOperator(value)) {
+      const expression = {
+        operandOne: 0,
+        operator: value,
+        operandTwo: state.expression.operandOne
+      };
+      this.setState({
+        screen: value,
+        expression: expression
+      });
+    } else if (isEqual(value)) {
+      const expression = state.expression;
+      if (expression.operator === null) return;
+
+      const result = calculate(
+        expression.operandTwo,
+        expression.operator,
+        expression.operandOne
+      );
+
+      this.setState({
+        screen: result,
+        expression: {
+          operandOne: result,
+          operator: null
+        }
+      });
+
+    } else if (value === 'c') {
+      this.setState({
+        screen: '',
+        expression: {
+          operandOne: 0,
+          operandTwo: 0
+        }
+      });
     }
+
     event.preventDefault();
   }
 
-  renderButton(value) {
-    return <Button value={value} onClick={(event) => this.handleClick(event)} />;
+  renderButton(value, display = null) {
+    if (display === null) {display = value;}
+    return <Button value={value} display={display} onClick={(event) => this.handleClick(event)} />;
   }
 
   render() {
@@ -50,7 +112,7 @@ class Calculator extends React.Component {
       <div>
         <h1>The calculator!</h1>
         <div className="row">
-          <div key="screen" className="screen">{this.state.screen.join('')}</div>
+          <div key="screen" className="screen">{this.state.screen}</div>
         </div>
         <div className="column">
           <div className="row">
@@ -70,10 +132,14 @@ class Calculator extends React.Component {
           </div>
           <div className="row">
             {this.renderButton(0)}
+            {this.renderButton('.')}
           </div>
         </div>
-        <div className="column">
+        <div className="column operator">
           {this.renderButton('c')}
+          {this.renderButton('/', '÷')}
+          {this.renderButton('*', 'x')}
+          {this.renderButton('-')}
           {this.renderButton('+')}
           {this.renderButton('=')}
         </div>

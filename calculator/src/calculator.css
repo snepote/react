@@ -23,6 +23,17 @@ div.column {
   text-align: right;
 }
 
+div.column.operator {
+  background-color: rgb(253, 158, 43);
+}
+
+div.column.operator button {
+  clear: both;
+  border-width: 1px;
+  border-color: white;
+  background-color: transparent;
+}
+
 div.screen {
   margin: 5px;
   padding: 10px;
