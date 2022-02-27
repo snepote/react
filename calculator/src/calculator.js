@@ -16,6 +16,8 @@ const isOperator = value => ['+', '-', '*', '/'].includes(value);
 
 const isEqual = value => value === '=';
 
+const isDecimalSeparator = value => value === '.';
+
 function calculate(a, operator, b) {
     switch(operator) {
       case '+':
@@ -54,22 +56,29 @@ class Calculator extends React.Component {
     const state = {...this.state};
     const operandOne = this.state.expression.operandOne;
 
-    if (isOperand(value)) {
+    if (isDecimalSeparator(value) && operandOne.toString().includes('.')) {
+      console.log('alreay contains decimal separator');
+      return;
+    }
+
+    if (isOperand(value) || isDecimalSeparator(value)) {
+      if (isDecimalSeparator(value)) {
+
+      }
+      console.log(value);
       const newOperand = Number(operandOne.toString() + value.toString());
-      const expression = {...state.expression, operandOne: newOperand};
       this.setState({
         screen: newOperand,
-        expression: expression
+        expression: {...state.expression, operandOne: newOperand}
       });
     } else if (isOperator(value)) {
-      const expression = {
-        operandOne: 0,
-        operator: value,
-        operandTwo: state.expression.operandOne
-      };
       this.setState({
         screen: value,
-        expression: expression
+        expression: {
+          operandOne: 0,
+          operator: value,
+          operandTwo: state.expression.operandOne
+        }
       });
     } else if (isEqual(value)) {
       const expression = state.expression;
@@ -111,37 +120,41 @@ class Calculator extends React.Component {
     return(
       <div>
         <h1>The calculator!</h1>
-        <div className="row">
-          <div key="screen" className="screen">{this.state.screen}</div>
-        </div>
         <div className="column">
           <div className="row">
-            {this.renderButton(1)}
-            {this.renderButton(2)}
-            {this.renderButton(3)}
+            <div key="screen" className="screen">{this.state.screen}</div>
           </div>
-          <div className="row">
-            {this.renderButton(4)}
-            {this.renderButton(5)}
-            {this.renderButton(6)}
+          <div className="column">
+            <div className="row">
+              {this.renderButton('c')}
+            </div>
+            <div className="row">
+              {this.renderButton(7)}
+              {this.renderButton(8)}
+              {this.renderButton(9)}
+            </div>
+            <div className="row">
+              {this.renderButton(4)}
+              {this.renderButton(5)}
+              {this.renderButton(6)}
+            </div>
+            <div className="row">
+              {this.renderButton(1)}
+              {this.renderButton(2)}
+              {this.renderButton(3)}
+            </div>
+            <div className="row">
+              {this.renderButton(0)}
+              {this.renderButton('.')}
+            </div>
           </div>
-          <div className="row">
-            {this.renderButton(7)}
-            {this.renderButton(8)}
-            {this.renderButton(9)}
+          <div className="column operator">
+            {this.renderButton('/', '÷')}
+            {this.renderButton('*', 'x')}
+            {this.renderButton('-')}
+            {this.renderButton('+')}
+            {this.renderButton('=')}
           </div>
-          <div className="row">
-            {this.renderButton(0)}
-            {this.renderButton('.')}
-          </div>
-        </div>
-        <div className="column operator">
-          {this.renderButton('c')}
-          {this.renderButton('/', '÷')}
-          {this.renderButton('*', 'x')}
-          {this.renderButton('-')}
-          {this.renderButton('+')}
-          {this.renderButton('=')}
         </div>
       </div>
     );

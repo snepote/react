@@ -12,8 +12,11 @@ div.row:after {
 }
 
 .button {
-  margin: 2px;
-  padding: 10px;
+  margin: 3px;
+  padding: 12px;
+  min-width: 40px;
+  border-radius: 3px;
+  border-width: 1px;
 }
 
 div.column {
@@ -23,21 +26,21 @@ div.column {
   text-align: right;
 }
 
-div.column.operator {
+div.column.operator button {
+  clear: both;
+  float: left;
+  color: white;
   background-color: rgb(253, 158, 43);
 }
 
-div.column.operator button {
-  clear: both;
-  border-width: 1px;
-  border-color: white;
-  background-color: transparent;
-}
-
 div.screen {
+  border-radius: 3px;
+  border-width: 1px;
+  color: white;  
   margin: 5px;
   padding: 10px;
   height: 20px;
   display: table;
+  width: 85%;
   background-color: grey;
 }
