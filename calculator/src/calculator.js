@@ -50,25 +50,25 @@ class Calculator extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-
   handleClick(event) {
     const value = event.target.value;
     const state = {...this.state};
     const operandOne = this.state.expression.operandOne;
 
     if (isDecimalSeparator(value) && operandOne.toString().includes('.')) {
-      console.log('alreay contains decimal separator');
       return;
     }
 
     if (isOperand(value) || isDecimalSeparator(value)) {
+      let newOperand;
       if (isDecimalSeparator(value)) {
-
+        newOperand = Number(operandOne).toFixed(1);
+      } else {
+        newOperand = Number(operandOne.toString() + value.toString());
       }
       console.log(value);
-      const newOperand = Number(operandOne.toString() + value.toString());
       this.setState({
-        screen: newOperand,
+        screen: newOperand.toString(),
         expression: {...state.expression, operandOne: newOperand}
       });
     } else if (isOperator(value)) {
