@@ -2,11 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Contact from './contact'
 import reportWebVitals from './reportWebVitals';
+
+const center = { lat: 0, long:0 };
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Contact
+      name="Sebastian"
+      email="sebastian@nepoteidea.com"
+      site="https://nepoteidea.com"
+      center={center}
+     />
   </React.StrictMode>,
   document.getElementById('root')
 );
